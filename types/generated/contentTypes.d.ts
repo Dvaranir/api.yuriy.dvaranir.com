@@ -791,6 +791,11 @@ export interface ApiMainPageMainPage extends Schema.SingleType {
       'oneToMany',
       'api::skill.skill'
     >;
+    schedule_animations: Attribute.Relation<
+      'api::main-page.main-page',
+      'oneToMany',
+      'api::schedule-animation.schedule-animation'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -895,6 +900,67 @@ export interface ApiProjectProject extends Schema.CollectionType {
       'api::project.project',
       'oneToMany',
       'api::project.project'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiScheduleAnimationScheduleAnimation
+  extends Schema.CollectionType {
+  collectionName: 'schedule_animations';
+  info: {
+    singularName: 'schedule-animation';
+    pluralName: 'schedule-animations';
+    displayName: 'Schedule Animations';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    event: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    animation: Attribute.Media &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    start_time: Attribute.Time &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::schedule-animation.schedule-animation',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::schedule-animation.schedule-animation',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::schedule-animation.schedule-animation',
+      'oneToMany',
+      'api::schedule-animation.schedule-animation'
     >;
     locale: Attribute.String;
   };
@@ -1053,6 +1119,7 @@ declare module '@strapi/strapi' {
       'plugin::i18n.locale': PluginI18NLocale;
       'api::main-page.main-page': ApiMainPageMainPage;
       'api::project.project': ApiProjectProject;
+      'api::schedule-animation.schedule-animation': ApiScheduleAnimationScheduleAnimation;
       'api::skill.skill': ApiSkillSkill;
       'api::small-project.small-project': ApiSmallProjectSmallProject;
     }

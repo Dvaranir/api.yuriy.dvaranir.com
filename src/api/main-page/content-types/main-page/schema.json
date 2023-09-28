@@ -143,6 +143,11 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::skill.skill"
+    },
+    "schedule_animations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::schedule-animation.schedule-animation"
     }
   }
 }
