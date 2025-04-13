@@ -25,14 +25,6 @@
         }
       }
     },
-    "technologies": {
-      "type": "text",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
     "live_url": {
       "type": "string",
       "pluginOptions": {
@@ -79,6 +71,11 @@
       },
       "type": "integer",
       "required": false
+    },
+    "technologies": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::technology.technology"
     }
   }
 }

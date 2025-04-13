@@ -843,12 +843,6 @@ export interface ApiProjectProject extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    technologies: Attribute.Text &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     live_url: Attribute.String &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -881,6 +875,11 @@ export interface ApiProjectProject extends Schema.CollectionType {
           localized: true;
         };
       }>;
+    technologies: Attribute.Relation<
+      'api::project.project',
+      'oneToMany',
+      'api::technology.technology'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -990,13 +989,11 @@ export interface ApiSkillSkill extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    list: Attribute.Text &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    technologies: Attribute.Relation<
+      'api::skill.skill',
+      'oneToMany',
+      'api::technology.technology'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1045,13 +1042,6 @@ export interface ApiSmallProjectSmallProject extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    technologies: Attribute.Text &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     live_url: Attribute.String &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -1077,6 +1067,11 @@ export interface ApiSmallProjectSmallProject extends Schema.CollectionType {
           localized: true;
         };
       }>;
+    technologies: Attribute.Relation<
+      'api::small-project.small-project',
+      'oneToMany',
+      'api::technology.technology'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1101,6 +1096,36 @@ export interface ApiSmallProjectSmallProject extends Schema.CollectionType {
   };
 }
 
+export interface ApiTechnologyTechnology extends Schema.CollectionType {
+  collectionName: 'technologies';
+  info: {
+    singularName: 'technology';
+    pluralName: 'technologies';
+    displayName: 'Technologies';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::technology.technology',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::technology.technology',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Shared {
     export interface ContentTypes {
@@ -1122,6 +1147,7 @@ declare module '@strapi/strapi' {
       'api::schedule-animation.schedule-animation': ApiScheduleAnimationScheduleAnimation;
       'api::skill.skill': ApiSkillSkill;
       'api::small-project.small-project': ApiSmallProjectSmallProject;
+      'api::technology.technology': ApiTechnologyTechnology;
     }
   }
 }
